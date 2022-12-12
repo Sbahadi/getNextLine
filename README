@@ -1,4 +1,4 @@
-open funtion returns :
+#open funtion returns :
 x > 0 if the file opened successfully.
 x < 0 if there is an error
 
