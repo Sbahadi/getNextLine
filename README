@@ -1,4 +1,4 @@
-#open funtion returns :
+<h1>open funtion returns : </h1>
 x > 0 if the file opened successfully.
 x < 0 if there is an error
 
