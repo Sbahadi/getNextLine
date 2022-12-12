@@ -1,0 +1,9 @@
+open funtion returns :
+x > 0 if the file opened successfully.
+x < 0 if there is an error
+
+open funtion arguments :
+0 : is the stdin.
+1 : is the stdout.
+2 : is stderr
+x > 2 : file descriptor
