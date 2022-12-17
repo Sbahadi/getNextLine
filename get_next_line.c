@@ -61,6 +61,7 @@ char *str_after_new_line(char *line)
     return str;
 }
 
+
 char *get_lineee(int fd)
 {
     ssize_t bytes_read;
@@ -68,11 +69,11 @@ char *get_lineee(int fd)
     char *line;
 
     buff = ft_calloc(BUFFER_SIZE + 1, 1);
-    line = ft_calloc(1, 1);
+    line = ft_calloc(BUFFER_SIZE, 1);
     bytes_read = 1;
     if (!buff || !line)
         return (0);
-    while (!ft_strchr(buff, '\n') && bytes_read > 0)
+    while (bytes_read)
     {
         ft_bzero(buff);
         bytes_read = read(fd, buff, BUFFER_SIZE);
@@ -84,98 +85,98 @@ char *get_lineee(int fd)
         }
         if (bytes_read == 0)
         {
+            
             free (buff);
             if (ft_strlen(line, 0) > 0)
                 return (line);
             free (line);
             return NULL;
         }
+        if (ft_strchr(buff, '\n') != -1)
+        {
+            line = ft_strjoin(line, buff);
+            break;
+        }
         line = ft_strjoin(line, buff);   
     }
+    
     free(buff);
     return (line);
     
 }
 
+char *wasted(char *str)
+{
+    int i = 0;
+    int wasted_length;
+    char *wasted_chars;
+    int x;
+
+    wasted_length = ft_strlen(str, 0) - ft_strlen(str, '\n') - 1;
+    if (wasted_length <= 0)
+        return NULL;
+    wasted_chars = ft_calloc(wasted_length + 1, 1);
+    if (!wasted_chars)
+        return NULL;
+    x = ft_strlen(str, '\n') + 1;
+    while (str[x])
+    {
+        wasted_chars[i++] = str[x++];
+    }
+    
+    return wasted_chars;
+}
 
 char *get_next_line(int fd)
 {
-    char *line;
-    char static *wasted_chars;
+    char static *line;
+    char *get_line_value;
     char *line_to_return;
-    // int line_to_return_length;
 
     if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
 
-    line = get_lineee(fd);
-
-    // printf("%s%s\n", KYEL,line);
-    if (!line && !wasted_chars)
-    {
-        return NULL;
-    }
-
-    if (wasted_chars)
-    {
-        // printf("%s%s%s\n", KBLU ,"Okey we have wasted chars to handle and it is ", wasted_chars);
-        line = ft_strjoin(wasted_chars, line);
-        // ft_bzero(wasted_chars);
-        // free(wasted_chars);
-    }
-   
-
+    get_line_value = get_lineee(fd);
     
+
+    if (!get_line_value && !line)
+        return NULL;
+
+    if (get_line_value)
+        line = ft_strjoin(line, get_line_value);
+
     if (ft_strchr(line, '\n'))
-        line_to_return = str_before_new_line(line);
+    {
+        line_to_return = ft_substr(line, 0, ft_strlen(line, '\n') + 1);
+        line = wasted(line);
+    }
     else
     {
-        int i = 0;
-        line_to_return = ft_calloc(ft_strlen(line, 0) + 1, 1);
-        while(line[i])
-        {
-            line_to_return[i] = line[i];
-            i++;
-        }
-        line_to_return[i] = '\0';
+        line_to_return = line;
+        ft_bzero(line);
     }
-
-    if (ft_strchr(line, '\n') && ft_strlen(ft_strchr(line, '\n') ,0) > 1)
-        wasted_chars = str_after_new_line(ft_strchr(line, '\n'));
-
-
-    // printf("%s||%s||\n", KRED, wasted_chars);
-    
-    // printf("%sCall end\n", KWHT);
-    
-
-
-    free(line);
+    // printf("%s%s", KYEL, line);
+    free(get_line_value);
     return (line_to_return);
 }
 
-int main(void)
-{
-    int fd = open("ff.txt", O_RDONLY);
-    printf("%s%s", KGRN ,get_next_line(fd));
-    printf("%s%s", KGRN ,get_next_line(fd));
-    // printf("%s%s", KGRN ,get_next_line(fd));
-    // printf("%s%s", KGRN ,get_next_line(fd));
-    
-    
-    
-    // printf("%s", get_next_line(fd));
 
-    // char *test = "p\n\nl";
-    
-    // printf("%d", ft_strlen(ft_strchr(test, '\n'), 0));
 
-    // return (0);
-    // char *x = str_after_new_line(ft_strchr(test, '\n'));
-    // printf("%s", x);
-    
+// int main(void)
+// {
 
-    return (0);
-}
+//     int fd = open("ff.txt", O_RDONLY);
+//     // get_next_line(fd);
+//     printf("%s%s", KGRN ,get_next_line(fd));
+//     printf("%s%s", KGRN ,get_next_line(fd));
+//     // printf("%s%s", KGRN ,get_next_line(fd));
+    
+//     // char *str = "\nSalah\nEddine\nBahadi";
+//     // printf("%s%s",KGRN, ft_substr(str, 0, ft_strchr(str, '\n')));
+//     // printf("%s%s" , KRED , wasted(str));
+
+
+//     return (0);
+// }
 
 

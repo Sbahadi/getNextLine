@@ -22,6 +22,8 @@ int ft_strlen(const char *str, int end)
     int i;
      
     i = 0;
+	if (!str)
+		return (0);
 	if (end > 0)
 	{
 		while (str[i] && str[i] != end)
@@ -44,6 +46,7 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	if (!s1)
 		return (s2);
+
 	str = ft_calloc((ft_strlen(s1, 0) + ft_strlen(s2, 0)) + 1, 1);
 	wordindex = 0;
 	strindex = 0;
@@ -58,7 +61,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (str);
 }
 
-char	*ft_strchr(const char *str, int c)
+int	ft_strchr(const char *str, int c)
 {
 	int	i;
 
@@ -66,12 +69,12 @@ char	*ft_strchr(const char *str, int c)
 	while (str[i])
 	{
 		if (((char *)str)[i] == (char)c)
-			return (&((char *) str)[i]);
+			return (i);
 		i++;
 	}
 	if ((char )c == '\0')
-		return (&((char *) str)[i]);
-	return (0);
+		return (i);
+	return (-1);
 }
 
 void ft_bzero(char *str)
@@ -84,4 +87,32 @@ void ft_bzero(char *str)
         str[i] = '\0';
         i++;
     }
+}
+
+char	*ft_substr(char const *s, unsigned int start, int len)
+{
+	unsigned int	s_i;
+	char			*p;
+	int			p_i;
+
+	s_i = 0;
+	p_i = 0;
+	if (start == 0 && len == 0)
+	{
+		p = ft_calloc(2, 1);
+		p[0] = s[0];
+	}
+	else if (len > ft_strlen (s, 0))
+		p = ft_calloc(ft_strlen (s, 0) + 1, 1);
+	else
+		p = ft_calloc(len + 1, 1);
+	if (!p || !s)
+		return (0);
+	while (s[s_i] != '\0')
+	{
+		if (s_i >= start && p_i < len)
+			p[p_i++] = ((char *)s)[s_i];
+		s_i++;
+	}
+	return (p);
 }
