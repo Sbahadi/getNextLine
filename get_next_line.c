@@ -123,7 +123,7 @@ char *wasted(char *str)
     {
         wasted_chars[i++] = str[x++];
     }
-    
+    free (str);
     return wasted_chars;
 }
 
@@ -137,6 +137,7 @@ char *get_next_line(int fd)
         return (NULL);
 
     get_line_value = get_lineee(fd);
+    // printf("|%s|", get_line_value);
     
 
     if (!get_line_value && !line)
@@ -145,7 +146,8 @@ char *get_next_line(int fd)
     if (get_line_value)
         line = ft_strjoin(line, get_line_value);
 
-    if (ft_strchr(line, '\n'))
+    
+    if (ft_strchr(line, '\n') != 1)
     {
         line_to_return = ft_substr(line, 0, ft_strlen(line, '\n') + 1);
         line = wasted(line);
@@ -168,7 +170,7 @@ char *get_next_line(int fd)
 //     int fd = open("ff.txt", O_RDONLY);
 //     // get_next_line(fd);
 //     printf("%s%s", KGRN ,get_next_line(fd));
-//     printf("%s%s", KGRN ,get_next_line(fd));
+//     // printf("%s%s", KGRN ,get_next_line(fd));
 //     // printf("%s%s", KGRN ,get_next_line(fd));
     
 //     // char *str = "\nSalah\nEddine\nBahadi";
