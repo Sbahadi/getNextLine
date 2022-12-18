@@ -2,7 +2,7 @@
 #define GET_NEXT_LINE_N
 
 #ifndef BUFFER_SIZE
-#define BUFFER_SIZE  5
+#define BUFFER_SIZE  42
 #endif
 
 # include <stdlib.h>

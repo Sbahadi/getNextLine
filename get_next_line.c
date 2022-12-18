@@ -9,58 +9,27 @@
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 
-char *str_before_new_line(char *line)
+char *wasted(char *str)
 {
-    int index;
-    char *str;
-    int line_full_length;
-    int line_until_new_line_length;
+    int i = 0;
+    int wasted_length;
+    char *wasted_chars;
+    int x;
 
-    index = 0;
-    line_full_length = ft_strlen(line, 0);
-    line_until_new_line_length = ft_strlen(line, '\n');
-    if (line_full_length > 0 && line_until_new_line_length == 0)
-    {
-        str = ft_calloc(2, 1);
-        if (!str)
-            return NULL;
-        str[0] = '\n';
-        return str;
-    }
-    str = ft_calloc(ft_strlen(line, '\n') + 2, 1);
-    if (!str)
+    wasted_length = ft_strlen(str, 0) - ft_strlen(str, '\n') - 1;
+    if (wasted_length <= 0)
         return NULL;
-    while (line[index])
-    {
-        str[index] = line[index];
-        if (str[index] == '\n')
-            break;
-        index++;
-    }
-    return str;
-}
-
-char *str_after_new_line(char *line)
-{
-    int lineindex;
-    int strindex;
-    char *str;
-
-    lineindex = 1;
-    strindex = 0;
-    if(!line) return NULL;
-    str = ft_calloc(ft_strlen(line, 0), 1);
-    if (!str)
+    wasted_chars = ft_calloc(wasted_length + 1, 1);
+    if (!wasted_chars)
         return NULL;
-    while (line[lineindex])
+    x = ft_strlen(str, '\n') + 1;
+    while (str[x])
     {
-        str[strindex] = line[lineindex];
-        strindex++;
-        lineindex++;
+        wasted_chars[i++] = str[x++];
     }
-    return str;
+    
+    return wasted_chars;
 }
-
 
 char *get_lineee(int fd)
 {
@@ -85,7 +54,6 @@ char *get_lineee(int fd)
         }
         if (bytes_read == 0)
         {
-            
             free (buff);
             if (ft_strlen(line, 0) > 0)
                 return (line);
@@ -105,28 +73,6 @@ char *get_lineee(int fd)
     
 }
 
-char *wasted(char *str)
-{
-    int i = 0;
-    int wasted_length;
-    char *wasted_chars;
-    int x;
-
-    wasted_length = ft_strlen(str, 0) - ft_strlen(str, '\n') - 1;
-    if (wasted_length <= 0)
-        return NULL;
-    wasted_chars = ft_calloc(wasted_length + 1, 1);
-    if (!wasted_chars)
-        return NULL;
-    x = ft_strlen(str, '\n') + 1;
-    while (str[x])
-    {
-        wasted_chars[i++] = str[x++];
-    }
-    free (str);
-    return wasted_chars;
-}
-
 char *get_next_line(int fd)
 {
     char static *line;
@@ -137,15 +83,12 @@ char *get_next_line(int fd)
         return (NULL);
 
     get_line_value = get_lineee(fd);
-    // printf("|%s|", get_line_value);
-    
 
-    if (!get_line_value && !line)
+    if (!get_line_value && !line)    
         return NULL;
 
     if (get_line_value)
         line = ft_strjoin(line, get_line_value);
-
     
     if (ft_strchr(line, '\n') != 1)
     {
@@ -156,8 +99,11 @@ char *get_next_line(int fd)
     {
         line_to_return = line;
         ft_bzero(line);
+        free(line);
     }
-    // printf("%s%s", KYEL, line);
+
+
+
     free(get_line_value);
     return (line_to_return);
 }
@@ -172,11 +118,8 @@ char *get_next_line(int fd)
 //     printf("%s%s", KGRN ,get_next_line(fd));
 //     // printf("%s%s", KGRN ,get_next_line(fd));
 //     // printf("%s%s", KGRN ,get_next_line(fd));
+//     // printf("%s%s", KGRN ,get_next_line(fd));
     
-//     // char *str = "\nSalah\nEddine\nBahadi";
-//     // printf("%s%s",KGRN, ft_substr(str, 0, ft_strchr(str, '\n')));
-//     // printf("%s%s" , KRED , wasted(str));
-
 
 //     return (0);
 // }
