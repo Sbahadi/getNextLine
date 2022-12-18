@@ -12,7 +12,7 @@
 
 
 char *get_next_line(int fd);
-char	*ft_substr(char const *s, unsigned int start, int len);
+char	*ft_substr(char *s, unsigned int start, int len);
 char *ft_calloc(size_t len, size_t size);
 int	ft_strchr(const char *str, int c);
 int ft_strlen(const char *str, int end);

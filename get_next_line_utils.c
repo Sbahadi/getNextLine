@@ -89,7 +89,7 @@ void ft_bzero(char *str)
     }
 }
 
-char	*ft_substr(char const *s, unsigned int start, int len)
+char	*ft_substr(char *s, unsigned int start, int len)
 {
 	unsigned int	s_i;
 	char			*p;

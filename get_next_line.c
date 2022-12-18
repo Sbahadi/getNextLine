@@ -27,7 +27,7 @@ char *wasted(char *str)
     {
         wasted_chars[i++] = str[x++];
     }
-    
+    // free(str);
     return wasted_chars;
 }
 
@@ -38,7 +38,7 @@ char *get_lineee(int fd)
     char *line;
 
     buff = ft_calloc(BUFFER_SIZE + 1, 1);
-    line = ft_calloc(BUFFER_SIZE, 1);
+    line = ft_calloc(1, 1);
     bytes_read = 1;
     if (!buff || !line)
         return (0);
@@ -80,13 +80,19 @@ char *get_next_line(int fd)
     char *line_to_return;
 
     if (fd < 0 || BUFFER_SIZE <= 0)
+    {
         return (NULL);
+    }
 
     get_line_value = get_lineee(fd);
 
-    if (!get_line_value && !line)    
-        return NULL;
 
+    if (!get_line_value && !line)
+    {
+        free(get_line_value);
+        free(line);
+        return NULL;
+    }
     if (get_line_value)
         line = ft_strjoin(line, get_line_value);
     
@@ -94,15 +100,14 @@ char *get_next_line(int fd)
     {
         line_to_return = ft_substr(line, 0, ft_strlen(line, '\n') + 1);
         line = wasted(line);
+
     }
     else
     {
         line_to_return = line;
         ft_bzero(line);
-        free(line);
+        // free(line);
     }
-
-
 
     free(get_line_value);
     return (line_to_return);
@@ -110,12 +115,23 @@ char *get_next_line(int fd)
 
 
 
+// int main()
+// {
+//     char *name = "Salah\nEddine\nAit";
+
+//     char *wast = wasted(name);
+//     printf("%s", wast);
+
+//     return(0);
+// // }
+
 // int main(void)
 // {
-
 //     int fd = open("ff.txt", O_RDONLY);
 //     // get_next_line(fd);
-//     printf("%s%s", KGRN ,get_next_line(fd));
+//     // printf("%s%s", KGRN ,get_next_line(fd));
+//     // printf("%s%s", KGRN ,get_next_line(fd));
+//     // printf("%s%s", KGRN ,get_next_line(fd));
 //     // printf("%s%s", KGRN ,get_next_line(fd));
 //     // printf("%s%s", KGRN ,get_next_line(fd));
 //     // printf("%s%s", KGRN ,get_next_line(fd));
