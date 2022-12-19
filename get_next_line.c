@@ -85,21 +85,26 @@ char *get_next_line(int fd)
     }
 
     get_line_value = get_lineee(fd);
+    // printf("%s|get line value\n", get_line_value);
+    // printf("%s|line before joinning\n", line);
+
 
 
     if (!get_line_value && !line)
     {
-        free(get_line_value);
-        free(line);
         return NULL;
     }
+
     if (get_line_value)
         line = ft_strjoin(line, get_line_value);
-    
+
+    // printf("%s%s|line after join\n", KGRN ,line);
     if (ft_strchr(line, '\n') != 1)
     {
         line_to_return = ft_substr(line, 0, ft_strlen(line, '\n') + 1);
+        // printf("%s%s|line to return\n", KRED , line_to_return);
         line = wasted(line);
+        // printf("%s%s|Wasted\n", KYEL , line);
 
     }
     else
@@ -108,7 +113,7 @@ char *get_next_line(int fd)
         ft_bzero(line);
         // free(line);
     }
-
+    // printf("%s-----------------------------------------------------------------\n", KBLU);
     free(get_line_value);
     return (line_to_return);
 }
@@ -125,19 +130,34 @@ char *get_next_line(int fd)
 //     return(0);
 // // }
 
-// int main(void)
-// {
-//     int fd = open("ff.txt", O_RDONLY);
-//     // get_next_line(fd);
-//     // printf("%s%s", KGRN ,get_next_line(fd));
-//     // printf("%s%s", KGRN ,get_next_line(fd));
-//     // printf("%s%s", KGRN ,get_next_line(fd));
-//     // printf("%s%s", KGRN ,get_next_line(fd));
-//     // printf("%s%s", KGRN ,get_next_line(fd));
-//     // printf("%s%s", KGRN ,get_next_line(fd));
+int main(void)
+{
+    int fd = open("ff.txt", O_RDONLY);
+    // get_next_line(fd);
+    // get_next_line(fd);
+
+    char *zabi;
+    zabi = get_next_line(fd);
+    int i = 0;
+    while (zabi[i])
+    {
+        printf("%s%c|", KGRN ,zabi[i++]);
+    }
+    printf("%s%d", KRED, i);
+    
+    // printf("%s%s", KGRN, zabi);
+    
+    
+    // printf("%s%s", KGRN ,get_next_line(fd));
+    // printf("%s%s", KGRN ,get_next_line(fd));
+    // printf("%s%s", KGRN ,get_next_line(fd));
+    // printf("%s%s", KGRN ,get_next_line(fd));
+    // printf("%s%s", KGRN ,get_next_line(fd));
+    // printf("%s%s", KGRN ,get_next_line(fd));
+    // printf("%s%s", KGRN ,get_next_line(fd));
     
 
-//     return (0);
-// }
+    return (0);
+}
 
 
