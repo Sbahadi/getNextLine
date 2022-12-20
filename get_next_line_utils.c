@@ -17,24 +17,18 @@ char *ft_calloc(size_t len, size_t size)
     return (p);
 }
 
-int ft_strlen(const char *str, int end)
+int ft_strlen(const char *str)
 {
     int i;
      
     i = 0;
 	if (!str)
-		return (0);
-	if (end > 0)
+		return 0;
+	while (str[i])
 	{
-		while (str[i] && str[i] != end)
-			i++;
+		i++;
 	}
-	else {
-		while (str[i])
-		{
-			i++;
-		}
-	}
+	
     return (i);
 }
 
@@ -45,23 +39,27 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		strindex;
 
 	if (!s1)
-		return (s2);
-
-	str = ft_calloc((ft_strlen(s1, 0) + ft_strlen(s2, 0)) + 1, 1);
+	{
+		s1 = (char *)malloc(1 * sizeof(char));
+		s1[0] = '\0';
+	}
+	if (!s1 || !s2)
+		return NULL;
+	str = ft_calloc((ft_strlen(s1) + ft_strlen(s2)) + 1, 1);
 	wordindex = 0;
 	strindex = 0;
 	if (!str)
 		return (0);
-	while (s1[wordindex] != '\0')
+	while (s1[wordindex])
 		str[strindex++] = s1[wordindex++];
 	wordindex = 0;
-	while (s2[wordindex] != '\0')
+	while (s2[wordindex])
 		str[strindex++] = s2[wordindex++];
 	free(s1);
 	return (str);
 }
 
-int	ft_strchr(const char *str, int c)
+char	*ft_strchr(const char *str, int c)
 {
 	int	i;
 
@@ -69,12 +67,12 @@ int	ft_strchr(const char *str, int c)
 	while (str[i])
 	{
 		if (((char *)str)[i] == (char)c)
-			return (i);
+			return (&((char *) str)[i]);
 		i++;
 	}
 	if ((char )c == '\0')
-		return (i);
-	return (-1);
+		return (&((char *) str)[i]);
+	return (0);
 }
 
 void ft_bzero(char *str)
@@ -89,30 +87,56 @@ void ft_bzero(char *str)
     }
 }
 
-char	*ft_substr(char *s, unsigned int start, int len)
+char	*str_before_new_line(char *s)
 {
-	unsigned int	s_i;
-	char			*p;
-	int			p_i;
+	int i;
+	char *str;
 
-	s_i = 0;
-	p_i = 0;
-	if (start == 0 && len == 0)
+	if (!s)
+		return NULL;
+	i = 0;
+	while (s[i])
+		i++;
+	str = ft_calloc(i + 2, 1);
+	if (!str)
+		return NULL;
+	i = 0;
+	while (s[i])
 	{
-		p = ft_calloc(2, 1);
-		p[0] = s[0];
+		str[i] = s[i];
+		if (str[i] == '\n')
+			break;
+		i++;
 	}
-	else if (len > ft_strlen (s, 0))
-		p = ft_calloc(ft_strlen (s, 0) + 1, 1);
-	else
-		p = ft_calloc(len + 1, 1);
-	if (!p || !s)
-		return (0);
-	while (s[s_i] != '\0')
+	return str;
+}
+
+char *str_after_new_line(char *s)
+{
+	int i;
+	int j;
+	char *str;
+	
+	i = 0;
+	j = 0;
+	while (s[i])
 	{
-		if (s_i >= start && p_i < len)
-			p[p_i++] = ((char *)s)[s_i];
-		s_i++;
+		if (s[i] == '\n')
+			break;
+		i++;
 	}
-	return (p);
+	if (!s[i])
+	{
+		free(s);
+		return NULL;
+	}
+
+	str = ft_calloc(ft_strlen(s) - i + 1, 1);
+	if (!str)
+		return NULL;
+	i++;
+	while (s[i])
+		str[j++] = s[i++];
+	free(s);
+	return (str);
 }
