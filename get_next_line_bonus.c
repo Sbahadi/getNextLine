@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sait-bah <sait-bah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/20 19:51:19 by sait-bah          #+#    #+#             */
-/*   Updated: 2022/12/21 17:05:25 by sait-bah         ###   ########.fr       */
+/*   Created: 2022/12/21 16:46:08 by sait-bah          #+#    #+#             */
+/*   Updated: 2022/12/21 17:45:23 by sait-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*str_before_new_line(char *s)
 {
@@ -93,24 +93,32 @@ char	*get__line(int fd, char *txt)
 
 char	*get_next_line(int fd)
 {
-	char static	*txt;
+	char static	*txt[OPEN_MAX];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	txt = get__line(fd, txt);
-	if (ft_strlen(txt) == 0)
+	txt[fd] = get__line(fd, txt[fd]);
+	if (ft_strlen(txt[fd]) == 0)
 	{
-		free(txt);
-		txt = NULL;
+		free(txt[fd]);
+		txt[fd] = NULL;
 		return (NULL);
 	}
-	line = str_before_new_line(txt);
-	txt = str_after_new_line(txt);
+	line = str_before_new_line(txt[fd]);
+	txt[fd] = str_after_new_line(txt[fd]);
 	return (line);
 }
 
 // int main()
 // {
-// 	int fd = open("ff.txt", O_RDONLY);	
+
+//     int fd = open("ff.txt", O_RDONLY);
+//     printf("%s", get_next_line(fd));
+//     printf("----------------------------\n");
+//     int fd2 = open("dd.txt", O_RDONLY);
+//     printf("%s", get_next_line(fd2));
+
+//     printf("%s", get_next_line(fd));
+//     return (0);
 // }
